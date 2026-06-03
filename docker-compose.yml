@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  training:
+    build: .
+    devices:
+      - /dev/kfd:/dev/kfd
+      - /dev/dri:/dev/dri
+    group_add:
+      - video
+      - render
+    environment:
+      - ROCM_PATH=/opt/rocm
+      - HSA_OVERRIDE_GFX_VERSION=10.3.0
+    volumes:
+      - ./output:/app/output
+      - ./data:/app/data
+    command: python train.py --epochs 3 --batch-size 4
